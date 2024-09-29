@@ -170,7 +170,7 @@ public abstract class ActivityUiRecog extends ActivityCommon implements IStatus 
         appId = Auth.getInstance(this).getAppId();
         appKey = Auth.getInstance(this).getAppKey();
         secretKey = Auth.getInstance(this).getSecretKey();
-        initialTts(); // 初始化TTS引擎
+
         mainHandler = new Handler() {
             /*
              * @param msg
@@ -182,6 +182,8 @@ public abstract class ActivityUiRecog extends ActivityCommon implements IStatus 
             }
 
         };
+
+        initialTts(); // 初始化TTS引擎
     }
 
     @Override
@@ -240,13 +242,13 @@ public abstract class ActivityUiRecog extends ActivityCommon implements IStatus 
     private void speak(String ttsContent) {
 
         List texts = new ArrayList<>();
-        if(ttsContent.length()>20){
-            int count=ttsContent.length()/20+1;
+        if(ttsContent.length()>50){
+            int count=ttsContent.length()/50+1;
             for (int i = 0; i < count; i++) {
                 if(i==(count-1)){
-                    texts.add(new Pair(ttsContent.substring(i*20,ttsContent.length()),(i+1)+""));
+                    texts.add(new Pair(ttsContent.substring(i*50,ttsContent.length()),(i+1)+""));
                 }else{
-                    texts.add(new Pair(ttsContent.substring(i*20,(i+1)*20),(i+1)+""));
+                    texts.add(new Pair(ttsContent.substring(i*50,(i+1)*50),(i+1)+""));
                 }
             }
             int result = synthesizer.batchSpeak(texts);
@@ -297,7 +299,7 @@ public abstract class ActivityUiRecog extends ActivityCommon implements IStatus 
                     synchronized (autoCheck) {
                         String message = autoCheck.obtainDebugMessage();
 //                        toPrint(message); // 可以用下面一行替代，在logcat中查看代码
-                        // Log.w("AutoCheckMessage", message);
+                         Log.e("AutoCheckMessage", message);
                     }
                 }
             }
